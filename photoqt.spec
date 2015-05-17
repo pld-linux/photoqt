@@ -3,6 +3,7 @@
 # - optional (runtime) deps:
 #  - XCFtools - https://github.com/j-jorge/xcftools
 #  - libqpsd - https://github.com/Code-ReaQtor/libqpsd
+%bcond_with	gm	# build with GraphicsMagic
 
 %define	qtver	5.1
 Summary:	Simple but powerful Qt-based image viewer
@@ -14,13 +15,19 @@ Group:		Applications
 Source0:	http://photoqt.org/pkgs/%{name}-%{version}.tar.gz
 # Source0-md5:	bc0233279c86db39dc2482583697c9b3
 URL:		http://photoqt.org/
-BuildRequires:	GraphicsMagick-devel
+%{?with_gm:BuildRequires:	GraphicsMagick-devel}
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5Gui-devel >= %{qtver}
 BuildRequires:	Qt5Multimedia-devel >= %{qtver}
+BuildRequires:	Qt5Sql-devel >= %{qtver}
 BuildRequires:	Qt5Svg-devel >= %{qtver}
-BuildRequires:	qt5-linguist >= %{qtver}
+BuildRequires:	Qt5Widgets-devel >= %{qtver}
 BuildRequires:	cmake
+BuildRequires:	exiv2-devel
+BuildRequires:	libstdc++-devel
+BuildRequires:	qt5-build >= %{qtver}
+BuildRequires:	qt5-linguist >= %{qtver}
+BuildRequires:	qt5-qmake >= %{qtver}
 BuildRequires:	rpmbuild(macros) >= 1.596
 Requires:	desktop-file-utils
 Requires:	gtk-update-icon-cache
