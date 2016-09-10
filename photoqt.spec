@@ -1,8 +1,3 @@
-# TODO
-# - with GM?
-# - optional (runtime) deps:
-#  - XCFtools - https://github.com/j-jorge/xcftools
-#  - libqpsd - https://github.com/Code-ReaQtor/libqpsd
 #
 # Conditional build:
 %bcond_without	gmagick		# GraphicsMagick support
@@ -44,8 +39,9 @@ Requires:	Qt5Sql-sqldriver-sqlite3 >= %{qt_ver}
 Requires:	Qt5Svg >= %{qt_ver}
 Requires:	Qt5Widgets >= %{qt_ver}
 Requires:	hicolor-icon-theme
-#Suggests:	Qt5Gui-imageformat-psd
-#Suggests:	xcftools
+# psd imageformat plugin
+Suggests:	libqpsd-qt5
+Suggests:	xcftools
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
