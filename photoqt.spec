@@ -5,29 +5,31 @@
 #  - libqpsd - https://github.com/Code-ReaQtor/libqpsd
 #
 # Conditional build:
-%bcond_with	gm	# build with GraphicsMagic
+%bcond_without	gmagick		# GraphicsMagick support
 
-%define	qt_ver	5.1
+%define	qt_ver	5.3
 Summary:	Simple but powerful Qt-based image viewer
 Summary(pl.UTF-8):	Prosta, ale mająca duże możliwości przeglądarka obrazków oparta na Qt
 Name:		photoqt
-Version:	1.2
+Version:	1.4.1
 Release:	1
-License:	GPL v2
+License:	GPL v2+
 Group:		X11/Applications
+#Source0Download: http://photoqt.org/down/
 Source0:	http://photoqt.org/pkgs/%{name}-%{version}.tar.gz
-# Source0-md5:	bc0233279c86db39dc2482583697c9b3
+# Source0-md5:	f708ccf9f4e01ad3fac2e893c4f14014
 URL:		http://photoqt.org/
-%{?with_gm:BuildRequires:	GraphicsMagick-devel}
+%{?with_gmagick:BuildRequires:	GraphicsMagick-devel}
 BuildRequires:	Qt5Core-devel >= %{qt_ver}
 BuildRequires:	Qt5Gui-devel >= %{qt_ver}
-BuildRequires:	Qt5Multimedia-devel >= %{qt_ver}
+BuildRequires:	Qt5Quick-devel >= %{qt_ver}
 BuildRequires:	Qt5Sql-devel >= %{qt_ver}
 BuildRequires:	Qt5Svg-devel >= %{qt_ver}
 BuildRequires:	Qt5Widgets-devel >= %{qt_ver}
-BuildRequires:	cmake
+BuildRequires:	cmake >= 2.8
 BuildRequires:	exiv2-devel
-BuildRequires:	libstdc++-devel
+BuildRequires:	libraw-devel
+BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	qt5-build >= %{qt_ver}
 BuildRequires:	qt5-linguist >= %{qt_ver}
 BuildRequires:	qt5-qmake >= %{qt_ver}
@@ -36,11 +38,14 @@ Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	gtk-update-icon-cache
 Requires:	Qt5Core >= %{qt_ver}
 Requires:	Qt5Gui >= %{qt_ver}
-Requires:	Qt5Multimedia >= %{qt_ver}
+Requires:	Qt5Quick >= %{qt_ver}
 Requires:	Qt5Sql >= %{qt_ver}
+Requires:	Qt5Sql-sqldriver-sqlite3 >= %{qt_ver}
 Requires:	Qt5Svg >= %{qt_ver}
 Requires:	Qt5Widgets >= %{qt_ver}
 Requires:	hicolor-icon-theme
+#Suggests:	Qt5Gui-imageformat-psd
+#Suggests:	xcftools
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -55,10 +60,10 @@ Prosta, ale mająca duże możliwości przeglądarka obrazków oparta na Qt.
 %build
 install -d build
 cd build
-%cmake \
-	-DGM=NO \
-	-DEXIV2=YES \
-	..
+%cmake .. \
+	%{!?with_gmagick:-DGM=OFF} \
+	-DEXIV2=ON
+
 %{__make}
 
 %install
@@ -81,5 +86,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README CHANGELOG
 %attr(755,root,root) %{_bindir}/photoqt
+%{_datadir}/appdata/photoqt.appdata.xml
 %{_desktopdir}/photoqt.desktop
-%{_iconsdir}/hicolor/*/apps/photoqt.png
+%{_iconsdir}/hicolor/*x*/apps/photoqt.png
