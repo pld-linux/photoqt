@@ -3,10 +3,13 @@
 # - optional (runtime) deps:
 #  - XCFtools - https://github.com/j-jorge/xcftools
 #  - libqpsd - https://github.com/Code-ReaQtor/libqpsd
+#
+# Conditional build:
 %bcond_with	gm	# build with GraphicsMagic
 
-%define	qtver	5.1
+%define	qt_ver	5.1
 Summary:	Simple but powerful Qt-based image viewer
+Summary(pl.UTF-8):	Prosta, ale mająca duże możliwości przeglądarka obrazków oparta na Qt
 Name:		photoqt
 Version:	1.2
 Release:	1
@@ -16,26 +19,35 @@ Source0:	http://photoqt.org/pkgs/%{name}-%{version}.tar.gz
 # Source0-md5:	bc0233279c86db39dc2482583697c9b3
 URL:		http://photoqt.org/
 %{?with_gm:BuildRequires:	GraphicsMagick-devel}
-BuildRequires:	Qt5Core-devel >= %{qtver}
-BuildRequires:	Qt5Gui-devel >= %{qtver}
-BuildRequires:	Qt5Multimedia-devel >= %{qtver}
-BuildRequires:	Qt5Sql-devel >= %{qtver}
-BuildRequires:	Qt5Svg-devel >= %{qtver}
-BuildRequires:	Qt5Widgets-devel >= %{qtver}
+BuildRequires:	Qt5Core-devel >= %{qt_ver}
+BuildRequires:	Qt5Gui-devel >= %{qt_ver}
+BuildRequires:	Qt5Multimedia-devel >= %{qt_ver}
+BuildRequires:	Qt5Sql-devel >= %{qt_ver}
+BuildRequires:	Qt5Svg-devel >= %{qt_ver}
+BuildRequires:	Qt5Widgets-devel >= %{qt_ver}
 BuildRequires:	cmake
 BuildRequires:	exiv2-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	qt5-build >= %{qtver}
-BuildRequires:	qt5-linguist >= %{qtver}
-BuildRequires:	qt5-qmake >= %{qtver}
+BuildRequires:	qt5-build >= %{qt_ver}
+BuildRequires:	qt5-linguist >= %{qt_ver}
+BuildRequires:	qt5-qmake >= %{qt_ver}
 BuildRequires:	rpmbuild(macros) >= 1.596
-Requires:	desktop-file-utils
-Requires:	gtk-update-icon-cache
+Requires(post,postun):	desktop-file-utils
+Requires(post,postun):	gtk-update-icon-cache
+Requires:	Qt5Core >= %{qt_ver}
+Requires:	Qt5Gui >= %{qt_ver}
+Requires:	Qt5Multimedia >= %{qt_ver}
+Requires:	Qt5Sql >= %{qt_ver}
+Requires:	Qt5Svg >= %{qt_ver}
+Requires:	Qt5Widgets >= %{qt_ver}
 Requires:	hicolor-icon-theme
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Simple but powerful Qt-based image viewer.
+
+%description -l pl.UTF-8
+Prosta, ale mająca duże możliwości przeglądarka obrazków oparta na Qt.
 
 %prep
 %setup -q
