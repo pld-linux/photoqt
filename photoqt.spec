@@ -7,7 +7,7 @@ Summary:	Simple but powerful Qt-based image viewer
 Summary(pl.UTF-8):	Prosta, ale mająca duże możliwości przeglądarka obrazków oparta na Qt
 Name:		photoqt
 Version:	2.5
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: http://photoqt.org/down/
