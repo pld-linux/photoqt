@@ -1,0 +1,21 @@
+--- photoqt-3.1/CMakeLists.txt.orig	2023-03-08 01:12:44.000000000 +0100
++++ photoqt-3.1/CMakeLists.txt	2023-03-26 22:07:55.517322764 +0200
+@@ -349,17 +349,9 @@ if(CHROMECAST)
+     elseif(NOT ${Python3_Interpreter_FOUND})
+         message(FATAL_ERROR "** Unable to locate Python3 Interpreter... is it installed?")
+     else()
+-        execute_process(COMMAND ${Python3_EXECUTABLE} -c "import pychromecast" RESULT_VARIABLE EXIT_CODE OUTPUT_QUIET TIMEOUT 2)
++        execute_process(COMMAND ${Python3_EXECUTABLE} -c "import pychromecast" RESULT_VARIABLE EXIT_CODE OUTPUT_QUIET TIMEOUT 10)
+         if(NOT ${EXIT_CODE} EQUAL 0)
+-            # try installing it with pip
+-            message(">> Attempt to install pychromecast locally using pip...")
+-            execute_process(COMMAND ${Python3_EXECUTABLE} -m pip install pychromecast --user RESULT_VARIABLE EXIT_CODE OUTPUT_QUIET TIMEOUT 2)
+-            execute_process(COMMAND ${Python3_EXECUTABLE} -c "import pychromecast" RESULT_VARIABLE EXIT_CODE OUTPUT_QUIET TIMEOUT 2)
+-            if(NOT ${EXIT_CODE} EQUAL 0)
+                 message(FATAL_ERROR "** Unable to locate Python3 module pychromecast. Please first install it or disable Chromecast support.")
+-            else()
+-                message(">> Success!")
+-            endif()
+         endif()
+         include_directories(${Python3_INCLUDE_DIRS})
+         target_link_libraries(${PROJECT_NAME} ${Python3_LIBRARIES})
