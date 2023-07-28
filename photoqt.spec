@@ -1,3 +1,6 @@
+# TODO:
+# VIDEO_MPV (upstream on by default) (BR: libmpv)
+# LIBVIPS (upstream off by default) (BR: glib2, vips, vips-cpp)
 #
 # Conditional build:
 %bcond_without	gmagick		# GraphicsMagick support
@@ -6,19 +9,19 @@
 Summary:	Simple but powerful Qt-based image viewer
 Summary(pl.UTF-8):	Prosta, ale mająca duże możliwości przeglądarka obrazków oparta na Qt
 Name:		photoqt
-Version:	3.1
+Version:	3.3
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: http://photoqt.org/down/
 Source0:	https://photoqt.org/downloads/source/%{name}-%{version}.tar.gz
-# Source0-md5:	fdc30d88a147b6639e73cffea98d2c44
+# Source0-md5:	d06988f0c505266bffbd187b6a4e8379
 Patch0:		%{name}-pychromecast.patch
 URL:		https://photoqt.org/
-# TODO (upstream off by default): mpv, vips(+glib2)
 BuildRequires:	DevIL-devel
 BuildRequires:	FreeImage-devel
 %{?with_gmagick:BuildRequires:	GraphicsMagick-c++-devel}
+BuildRequires:	Qt5Concurrent-devel >= %{qt_ver}
 BuildRequires:	Qt5Core-devel >= %{qt_ver}
 BuildRequires:	Qt5DBus-devel >= %{qt_ver}
 BuildRequires:	Qt5Gui-devel >= %{qt_ver}
@@ -30,7 +33,7 @@ BuildRequires:	Qt5Svg-devel >= %{qt_ver}
 BuildRequires:	Qt5Widgets-devel >= %{qt_ver}
 BuildRequires:	Qt5Xml-devel >= %{qt_ver}
 BuildRequires:	cmake >= 3.16
-BuildRequires:	exiv2-devel
+BuildRequires:	exiv2-devel >= 0.26
 BuildRequires:	libarchive-devel
 BuildRequires:	libraw-devel
 BuildRequires:	libstdc++-devel >= 6:4.7
@@ -68,13 +71,12 @@ Prosta, ale mająca duże możliwości przeglądarka obrazków oparta na Qt.
 %patch0 -p1
 
 %build
-install -d build
-cd build
-%cmake .. \
+%cmake -B build \
 	-DEXIV2=ON \
-	%{!?with_gmagick:-DGM=OFF}
+	%{!?with_gmagick:-DGM=OFF} \
+	-DVIDEO_MPV=OFF
 
-%{__make}
+%{__make} -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
